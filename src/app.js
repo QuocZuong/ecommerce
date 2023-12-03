@@ -14,7 +14,6 @@ app.use(compression());
 
 // init db
 instanceMongoDB.connect();
-checkOverload();
 
 // init routes
 app.get("/", (req, res, next) => {
