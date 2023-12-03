@@ -7,7 +7,9 @@ const server = app.listen(PORT, () => {
 });
 
 process.on("SIGINT", () => {
+    console.log("Received SIGINT. Closing server...");
     server.close(() => {
-        console.log("Exit Server");
+        console.log("Server closed. Exiting...");
+        process.exit(0);
     });
 });
