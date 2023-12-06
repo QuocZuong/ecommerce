@@ -2,8 +2,9 @@ import express from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import compression from "compression";
+import "dotenv/config";
 import instanceMongoDB from "./db/init.mongodb.js";
-import { checkOverload } from "./helper/check.connect.js";
+import router from "./routes/index.js";
 
 const app = express();
 
@@ -16,9 +17,7 @@ app.use(compression());
 instanceMongoDB.connect();
 
 // init routes
-app.get("/", (req, res, next) => {
-    return res.status(200).json({ message: "hihihi" });
-});
+app.use("", router);
 
 // handle errors
 
