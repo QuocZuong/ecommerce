@@ -1,8 +1,7 @@
 "use strict";
 
 import mongoose from "mongoose";
-
-const connectString = "mongodb+srv://zuong:zuong@cluster0.h6fx5xr.mongodb.net/?retryWrites=true&w=majority";
+import { dev } from "../configs/config.mongodb.js";
 
 class Database {
     // constructor() {
@@ -17,7 +16,7 @@ class Database {
         }
 
         mongoose
-            .connect(connectString)
+            .connect(dev.db.connectString)
             .then((_) => console.log("Connected to MongoDB"))
             .catch((err) => console.log("Connect failed", err));
     }
