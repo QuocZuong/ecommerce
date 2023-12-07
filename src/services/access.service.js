@@ -2,7 +2,7 @@
 
 import Shop from "../models/shop.model.js";
 import bcrypt from "bcrypt";
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { KeyTokenService } from "./keyToken.service.js";
 import createTokenPair from "../auth/authUtils.js";
 import { getInfoData } from "../utils/index.js";
@@ -39,35 +39,29 @@ export default class AccessService {
 
             if (newShop) {
                 // create private key, public key
-                const { privateKey, publicKey } = crypto.generateKeyPairSync("rsa", {
-                    modulusLength: 4096,
-                    publicKeyEncoding: {
-                        type: "pkcs1",
-                        format: "pem",
-                    },
-                    privateKeyEncoding: {
-                        type: "pkcs1",
-                        format: "pem",
-                    },
-                });
+
+                // simple way
+                const privateKey = crypto.randomBytes(64).toString("hex");
+                const publicKey = crypto.randomBytes(64).toString("hex");
 
                 // store to database
-                const publicKeyString = await KeyTokenService.createKeyToken({
+                const keyStore = await KeyTokenService.createKeyToken({
                     userId: newShop._id,
                     publicKey,
+                    privateKey,
                 });
 
-                if (!publicKeyString) {
+                console.log("Key store:", keyStore);
+
+                if (!keyStore) {
                     return {
                         code: "xxxx",
-                        message: "publicKeyString error",
+                        message: "keyStore error",
                     };
                 }
 
-                // convert public key from string to object
-                const publicKeyObject = crypto.createPublicKey(publicKeyString);
+                const tokens = await createTokenPair({ userId: newShop._id, email }, publicKey, privateKey);
 
-                const tokens = await createTokenPair({ userId: newShop._id, email }, publicKeyObject, privateKey);
                 console.log("Created Token Success:", tokens);
 
                 return {
