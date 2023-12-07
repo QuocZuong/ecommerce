@@ -5,14 +5,12 @@ import JWT from "jsonwebtoken";
 const createTokenPair = async (payload, publicKey, privateKey) => {
     try {
         // access token can be consider as a ATM card
-        const accessToken = await JWT.sign(payload, privateKey, {
-            algorithm: "RS256",
+        const accessToken = await JWT.sign(payload, publicKey, {
             expiresIn: "2 days",
         });
 
         // can consider as CCCD to backup
         const refreshToken = await JWT.sign(payload, privateKey, {
-            algorithm: "RS256",
             expiresIn: "7 days",
         });
 
