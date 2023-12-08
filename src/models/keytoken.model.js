@@ -21,10 +21,15 @@ var keyTokenSchema = new Schema(
             type: String,
             required: true,
         },
-        refreshToken: {
+        refreshTokensUsed: {
             // To detect if hacker is using token
             type: Array,
             default: [],
+        },
+        refreshToken: {
+            // To detect if hacker is using token
+            type: String,
+            required: true,
         },
     },
     {
