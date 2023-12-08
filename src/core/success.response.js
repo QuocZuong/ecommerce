@@ -1,5 +1,7 @@
 "use strict";
 
+import httpStatusCode from "../utils/httpStatusCode.js";
+
 const STATUS_CODE = {
     OK: 200,
     CREATED: 201,
@@ -12,13 +14,13 @@ const REASON_STATUS_CODE = {
 
 class SuccessResponse {
     constructor(
-        statusCode = STATUS_CODE.OK,
-        reasonStatusCode = REASON_STATUS_CODE.OK,
+        statusCode = httpStatusCode.StatusCodes.OK,
+        reasonStatusCode = httpStatusCode.ReasonPhrases.OK,
         message = reasonStatusCode,
         metadata = {},
     ) {
-        this.message = message;
         this.status = statusCode;
+        this.message = message;
         this.metadata = metadata;
     }
 
@@ -37,11 +39,17 @@ class Created extends SuccessResponse {
     constructor({
         message,
         metadata,
-        statusCode = STATUS_CODE.CREATED,
-        reasonStatusCode = REASON_STATUS_CODE.CREATED,
+        statusCode = httpStatusCode.StatusCodes.CREATED,
+        reasonStatusCode = httpStatusCode.ReasonPhrases.CREATED,
     }) {
         super(statusCode, reasonStatusCode, message, metadata);
     }
 }
 
-export { OK, Created };
+class Success extends SuccessResponse {
+    constructor({ message, metadata }) {
+        super(message, metadata);
+    }
+}
+
+export { OK, Created, SuccessResponse, Success };
