@@ -5,8 +5,8 @@ import { Schema, model } from "mongoose";
 const DOCUMENT_NAME = "Key";
 const COLLECTION_NAME = "Keys";
 
-// Create this one to store public key
-var keyTokenSchema = new Schema(
+// Create this one to store key for authentication
+const keyTokenSchema = new Schema(
     {
         user: {
             type: Schema.Types.ObjectId,
