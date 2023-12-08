@@ -3,7 +3,6 @@ import AccessService from "../services/access.service.js";
 import { Created, Success } from "../core/success.response.js";
 class AccessController {
     login = async (req, res, next) => {
-        console.log("AccessController return", await AccessService.login(req.body));
         new Success({
             metadata: await AccessService.login(req.body),
         }).send(res);
